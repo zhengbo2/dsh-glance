@@ -1,0 +1,7 @@
+﻿node_modules/
+_screenshots/
+*.bak
+*.bak-*
+_*.png
+!.gitignore
+.DS_Store

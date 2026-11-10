@@ -1,0 +1,38 @@
+{
+  "name": "dsh-glance",
+  "version": "0.1.0",
+  "description": "DSH 桌面端的置顶小条：空闲一颗球，有任务时丝滑长成一小条，显示我在思考/在跑什么/等你批准，点一下展开详情。A tiny always-on-top strip for DSH desktop.",
+  "type": "module",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "author": "围脖",
+  "keywords": [
+    "deepseek",
+    "harness",
+    "dsh",
+    "dsh-plugin",
+    "overlay",
+    "status"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhengbo2/Weibo.git"
+  },
+  "homepage": "https://github.com/zhengbo2/Weibo#readme",
+  "files": [
+    "lib",
+    "runtime",
+    "assets",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "engines": {
+    "dsh": ">=0.2.1-rc.2 <0.3.0-0"
+  }
+}
