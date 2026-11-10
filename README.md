@@ -59,14 +59,22 @@ WPF        系统自带，零下载，透明 + 圆角 + 缓动都有   ← 本�
 ```
 lib/index.js                 Node 侧插件
                                听 session/event → 折叠成状态 → 写 state.json（节流 120ms）
-                               启动时拉起小窗；DSH 退出时把它一起关掉
+                               启动时 spawn powershell 拉起 WPF 窗口；DSH 退出时 kill 掉
 
-runtime/glance.ps1           WPF 窗口（PowerShell -STA 宿主）
+runtime/glance.ps1           WPF 窗口（需要 PowerShell -STA）
                                每 120ms 读一次 state.json → 切球 / 条 / 详情
                                透明、无边框、Topmost、WS_EX_NOACTIVATE 不抢焦点
 
-runtime/launch_glance.vbs    用 wscript 静默拉起，避免闪一个控制台窗
+runtime/launch_glance.vbs    开发用：手动重开窗口时用它，避免闪一个控制台窗
+                               （插件本身不用它，直接 spawn 带 windowsHide）
 ```
+
+**实际拉起命令：**
+
+```
+powershell.exe -STA -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File runtime/glance.ps1
+```
+
 
 **运行数据落在 `~/.dsh/glance/`：**
 
@@ -129,7 +137,8 @@ Copy-Item .\lib\index.js    $env:USERPROFILE\.dsh\profiles\desktop\node_modules\
 Copy-Item .\runtime\glance.ps1 $env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-glance\runtime\ -Force
 
 # 只改窗口脚本时，可以单独重开窗口，不必重启 DSH
-wscript.exe $env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-glance\runtime\launch_glance.vbs <同上>\glance.ps1
+# （用 vbs 包一层，否则会弹出一个 Windows Terminal）
+wscript.exe .\runtime\launch_glance.vbs (Resolve-Path .\runtime\glance.ps1)
 ```
 
 **⚠️ `glance.ps1` 必须存成 UTF-8 **带 BOM** + CRLF。**
